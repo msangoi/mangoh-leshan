@@ -12,8 +12,6 @@
 	<classpathentry kind="lib" path="lib/leshan-core-0.1.11-M7-SNAPSHOT.jar" sourcepath="lib/leshan-core-0.1.11-M7-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="lib/scandium-1.0.0-RC2.jar" sourcepath="lib/scandium-1.0.0-RC2.jar-sources.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.10.jar" sourcepath="lib/slf4j-api-1.7.10-sources.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-api-2.1.jar" sourcepath="lib/log4j-api-2.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-core-2.1.jar" sourcepath="lib/log4j-core-2.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-slf4j-impl-2.1.jar" sourcepath="lib/log4j-slf4j-impl-2.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.13.jar" sourcepath="lib/lib/slf4j-simple-1.7.13.jar-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
