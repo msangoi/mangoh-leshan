@@ -28,82 +28,85 @@ public class Device extends BaseInstanceEnabler {
     private String utcOffset = new SimpleDateFormat("X").format(Calendar.getInstance().getTime());
 
     @Override
-    public ReadResponse read(int resourceid) {
-        switch (resourceid) {
+    public ReadResponse read(int resourceId) {
+        System.out.println("Device: read on resource " + resourceId);
+
+        switch (resourceId) {
         case 0: // manufacturer
-            return ReadResponse.success(resourceid, manufacturer);
+            return ReadResponse.success(resourceId, manufacturer);
 
         case 1: // model number
             if (modelNumber == null) {
                 modelNumber = this.getValueFromCommand("cm", "info", "device");
             }
-            return ReadResponse.success(resourceid, modelNumber);
+            return ReadResponse.success(resourceId, modelNumber);
 
         case 2: // serial number
             if (serialNumber == null) {
                 serialNumber = this.getValueFromCommand("cm", "info", "fsn");
             }
-            return ReadResponse.success(resourceid, serialNumber);
+            return ReadResponse.success(resourceId, serialNumber);
 
         case 3: // firmware version
-            return ReadResponse.success(resourceid, this.getValueFromCommand("cm", "info", "firmware"));
+            return ReadResponse.success(resourceId, this.getValueFromCommand("cm", "info", "firmware"));
 
         case 6: // available power sources: USB
-            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceid,
+            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceId,
                     Collections.singletonMap(0, 5L)));
 
         case 7: // voltage
-            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceid,
+            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceId,
                     Collections.singletonMap(0, 5L)));
 
         case 8: // current
-            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceid,
+            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceId,
                     Collections.singletonMap(0, 5L)));
 
         case 9: // battery level
-            return ReadResponse.success(resourceid, 92);
+            return ReadResponse.success(resourceId, 92);
 
         case 10: // memory free
-            return ReadResponse.success(resourceid, (114 + new Random().nextInt(50)));
+            return ReadResponse.success(resourceId, (114 + new Random().nextInt(50)));
 
         case 11: // error codes
-            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceid,
+            return ReadResponse.success(LwM2mMultipleResource.newIntegerResource(resourceId,
                     Collections.singletonMap(0, 0L)));
 
         case 13: // time
-            return ReadResponse.success(resourceid, new Date());
+            return ReadResponse.success(resourceId, new Date());
 
         case 14: // utc offset
-            return ReadResponse.success(resourceid, utcOffset);
+            return ReadResponse.success(resourceId, utcOffset);
 
         case 15: // timezone
-            return ReadResponse.success(resourceid, timezone);
+            return ReadResponse.success(resourceId, timezone);
 
         case 16: // supported binding and modes
-            return ReadResponse.success(resourceid, supportedBinding);
+            return ReadResponse.success(resourceId, supportedBinding);
 
         default:
-            return super.read(resourceid);
+            return super.read(resourceId);
         }
     }
 
     @Override
-    public WriteResponse write(int resourceid, LwM2mResource value) {
+    public WriteResponse write(int resourceId, LwM2mResource value) {
+        System.out.println("Device: write on resource " + resourceId);
 
-        switch (resourceid) {
+        switch (resourceId) {
 
         case 14: // utc offset
             utcOffset = (String) value.getValue();
-            fireResourcesChange(resourceid);
+            fireResourcesChange(resourceId);
             return WriteResponse.success();
 
         case 15: // timezone
             timezone = (String) value.getValue();
-            fireResourcesChange(resourceid);
+            fireResourcesChange(resourceId);
             return WriteResponse.success();
 
         default:
-            return super.write(resourceid, value);
+            return super.write(resourceId, value);
         }
     }
 
@@ -116,16 +119,17 @@ public class Device extends BaseInstanceEnabler {
     }
 
     @Override
-    public ExecuteResponse execute(int resourceid, String params) {
+    public ExecuteResponse execute(int resourceId, String params) {
+        System.out.println("Device: exec on resource " + resourceId);
 
-        if (resourceid == 4) { // reboot
-
-            // TODO reboot
-
+        if (resourceId == 4) { // reboot
+            System.out.println("\n\n REBOOT ! \n\n");
             return ExecuteResponse.success();
-
+        } else if (resourceId == 5) { // factory reset
+            System.out.println("\n\n FACTORY RESET ! \n\n");
+            return ExecuteResponse.success();
         } else {
-            return super.execute(resourceid, params);
+            return super.execute(resourceId, params);
         }
     }
 
