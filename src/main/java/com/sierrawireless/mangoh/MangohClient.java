@@ -4,9 +4,10 @@ import static org.eclipse.leshan.client.object.Security.noSec;
 import static org.eclipse.leshan.client.object.Security.noSecBootstap;
 import static org.eclipse.leshan.client.object.Security.psk;
 import static org.eclipse.leshan.client.object.Security.pskBootstrap;
-import static org.eclipse.leshan.client.util.LwM2mId.DEVICE_ID;
-import static org.eclipse.leshan.client.util.LwM2mId.SECURITY_ID;
-import static org.eclipse.leshan.client.util.LwM2mId.SERVER_ID;
+import static org.eclipse.leshan.LwM2mId.DEVICE;
+import static org.eclipse.leshan.LwM2mId.LOCATION;
+import static org.eclipse.leshan.LwM2mId.SECURITY;
+import static org.eclipse.leshan.LwM2mId.SERVER;
 
 import java.util.List;
 
@@ -146,24 +147,23 @@ public class MangohClient {
             ObjectsInitializer initializer = new ObjectsInitializer();
             if (needBootstrap) {
                 if (pskIdentity == null)
-                    initializer.setInstancesForObject(SECURITY_ID, noSecBootstap(serverURI, 123));
+                    initializer.setInstancesForObject(SECURITY, noSecBootstap(serverURI));
                 else
-                    initializer.setInstancesForObject(SECURITY_ID, pskBootstrap(serverURI, 123, pskIdentity, pskKey));
+                    initializer.setInstancesForObject(SECURITY, pskBootstrap(serverURI, pskIdentity, pskKey));
             } else {
                 if (pskIdentity == null) {
-                    initializer.setInstancesForObject(SECURITY_ID, noSec(serverURI, 123));
-                    initializer.setInstancesForObject(SERVER_ID, new Server(123, 30, BindingMode.U, false));
+                    initializer.setInstancesForObject(SECURITY, noSec(serverURI, 123));
+                    initializer.setInstancesForObject(SERVER, new Server(123, 30, BindingMode.U, false));
                 } else {
-                    initializer.setInstancesForObject(SECURITY_ID, psk(serverURI, 123, pskIdentity, pskKey));
-                    initializer.setInstancesForObject(SERVER_ID, new Server(123, 30, BindingMode.U, false));
+                    initializer.setInstancesForObject(SECURITY, psk(serverURI, 123, pskIdentity, pskKey));
+                    initializer.setInstancesForObject(SERVER, new Server(123, 30, BindingMode.U, false));
                 }
             }
             initializer.setClassForObject(3, Device.class);
-            List<LwM2mObjectEnabler> enablers = initializer.create(SECURITY_ID, SERVER_ID, DEVICE_ID);
+            List<LwM2mObjectEnabler> enablers = initializer.create(SECURITY, SERVER, DEVICE);
 
             // Create client
-            LeshanClientBuilder builder = new LeshanClientBuilder();
-            builder.setEndpoint(endpoint);
+            LeshanClientBuilder builder = new LeshanClientBuilder(endpoint);
             builder.setLocalAddress(localAddress, localPort);
             builder.setLocalSecureAddress(secureLocalAddress, secureLocalPort);
             builder.setObjects(enablers);
